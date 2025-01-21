@@ -1,4 +1,4 @@
-# TimeOtter: Calendar Alarm Manager
+# TimeOtter: Calendar Driven Task Execution
 
 <img align="right" src="https://github.com/user-attachments/assets/073bf189-3c47-4ec3-bc60-97ed9d288b2a" width="400" height="410">
 

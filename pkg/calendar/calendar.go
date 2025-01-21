@@ -52,6 +52,9 @@ func ConvertTimeToCron(timeStr string) string {
 		}
 	}
 
+	// Subtract 5 minutes from the given time
+	t = t.Add(-5 * time.Minute)
+
 	// Extract time components
 	_ = t.Second()
 	mins := t.Minute()

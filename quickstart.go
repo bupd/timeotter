@@ -9,12 +9,19 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"runtime"
 	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/calendar/v3"
 	"google.golang.org/api/option"
+)
+
+var (
+	calendarID string = "bupdprasanth@gmail.com"
+	cmdToExec  string = "mpv ~/video.mp4"
+	MaxRes     int64  = 2
 )
 
 // Retrieve a token, saves the token, then returns the generated client.
@@ -110,8 +117,8 @@ func main() {
 	// Print the marshaled output
 	fmt.Println(string(jsonDatas))
 	t := time.Now().Format(time.RFC3339)
-	events, err := srv.Events.List("bupdprasanth@gmail.com").ShowDeleted(false).
-		SingleEvents(true).TimeMin(t).MaxResults(2).OrderBy("startTime").Do()
+	events, err := srv.Events.List(calendarID).ShowDeleted(false).
+		SingleEvents(true).TimeMin(t).MaxResults(MaxRes).OrderBy("startTime").Do()
 	if err != nil {
 		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
 	}
@@ -123,8 +130,12 @@ func main() {
 	}
 }
 
+// for parsing the given events
 func eventParser(events *calendar.Events) {
-	ClearCronJobs()
+	err := ClearCronJobs()
+	if err != nil {
+		log.Fatalf("clearing cron jobs failed: %v", err)
+	}
 
 	for _, item := range events.Items {
 		date := item.Start.DateTime
@@ -134,9 +145,9 @@ func eventParser(events *calendar.Events) {
 		fmt.Printf("cron string: %s:- ", ConvertTimeToCron(date))
 		fmt.Printf("%v (%v)\n", item.Summary, date)
 		cronStr := ConvertTimeToCron(date)
-		err := AddCronJob(cronStr)
+		err := AddCrons(cronStr)
 		if err != nil {
-			// log.Fatal(err)
+			log.Fatal(err)
 		} else {
 			fmt.Println("Cron job added successfully!")
 		}
@@ -171,46 +182,95 @@ func ConvertTimeToCron(timeStr string) string {
 	weekday := int(t.Weekday())
 
 	// Construct the cron string (without seconds as it is optional)
-	cron := fmt.Sprintf("%d %d %d %d %d *", mins, hour, day, month, weekday)
+	cron := fmt.Sprintf("%d %d %d %d %d", mins, hour, day, month, weekday)
 	return cron
 }
 
-// AddCronJob adds the cron job to the crontab.
-func AddCronJob(cronString string) error {
-	curruser, _ := user.Current()
-	fmt.Println(curruser.Username)
+// // AddCronJob adds the cron job to the crontab.
+// func AddCronJob(cronString string) error {
+// 	command := "mpv ~/video.mp4"
+// 	// Build the cron job command
+// 	cronJob := fmt.Sprintf("%s %s", cronString, command)
+//
+// 	// Use crontab command to add the cron job
+// 	cronCommand := fmt.Sprintf("(crontab -l; echo \"%s\") | crontab -", cronJob)
+//
+// 	// Execute the shell command using executeShellCommand
+// 	err := executeShellCommand(cronCommand)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to add cron job: %v", err)
+// 	}
+//
+// 	return nil
+// }
 
-	command := "mpv ~/video.mp4"
-	// Build the cron job command
-	cronJob := fmt.Sprintf("%s %s", cronString, command)
+func AddCrons(cronJob string) error {
+	cronLocation := GetCronLocation()
 
-	// Use crontab command to add the cron job
-	cmd := exec.Command("bash", "-c", fmt.Sprintf("(crontab -l; echo \"%s\") | crontab -", cronJob))
-	err := cmd.Run()
+	// linux := "/var/spool/cron/bupd"
+	// termux := "/data/data/com.termux/files/usr/var/spool/cron/u0_a323"
+
+	// Shell script to backup the crontab and remove cron jobs below the comment
+	script := fmt.Sprintf(`
+    #!/bin/bash
+
+    # Add a new cron job manually (This is your cron job command)
+    echo "%s %s" >> "%s"
+    `, cronJob, cmdToExec, cronLocation)
+
+	// should edit the above based on the linux or termux
+
+	// Execute the shell script
+	err := executeShellCommand(script)
 	if err != nil {
-		return fmt.Errorf("failed to add cron job: %v", err)
+		log.Fatal(err)
 	}
 
 	return nil
 }
 
-func ClearCronJobs() error {
-	// linux := "/var/spool/cron/bupd"
-	// termux := "/data/data/com.termux/files/usr/var/spool/cron/u0_a323"
+func GetCronLocation() string {
+	var cronLocation string
 
+	curruser, _ := user.Current()
+
+	if runtime.GOOS == "android" && runtime.GOARCH == "arm64" {
+		termux := "/data/data/com.termux/files/usr/var/spool/cron"
+		cronLocation = fmt.Sprintf("%s/%s", termux, curruser.Username)
+	}
+	if runtime.GOOS == "linux" {
+		linux := "/var/spool/cron"
+		cronLocation = fmt.Sprintf("%s/%s", linux, curruser.Username)
+	}
+
+	return cronLocation
+}
+
+func ClearCronJobs() error {
 	// Shell script to backup the crontab and remove cron jobs below the comment
-	script := `
-	#!/bin/bash
+	// script := `
+	// #!/bin/bash
+	//
+	// # Backup current crontab
+	// crontab -l > crontab_backup.txt
+	//
+	// # Remove all cron jobs below the comment
+	// awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -
+	// echo "# custom crons below this can be deleted." >> "/var/spool/cron/bupd"
+	// `
+
+	cronLocation := GetCronLocation()
+
+	script := fmt.Sprintf(`
+  #!/bin/bash
 
 	# Backup current crontab
 	crontab -l > crontab_backup.txt
 
 	# Remove all cron jobs below the comment
 	awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -
-	echo "# custom crons below this can be deleted." >> "/var/spool/cron/bupd"
-	`
-
-	// should edit the above based on the linux or termux
+	echo "# custom crons below this can be deleted." >> "%s"
+    `, cronLocation)
 
 	// Execute the shell script
 	err := executeShellCommand(script)

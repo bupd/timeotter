@@ -1,5 +1,7 @@
-# timeotter
+# TimeOtter: Calendar Alarm Manager
 
+A utility that integrates with Google Calendar and helps you run scheduled calendar alarms and execute commands based on them.
+In other words `execute commands based on your calendars`
 
 <!-- <img align="right" src="https://github.com/user-attachments/assets/a7a13a30-be33-445f-b624-7fc93f4a3d00" width="400" height="410"> -->
 

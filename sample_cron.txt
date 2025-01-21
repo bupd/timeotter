@@ -1,0 +1,4 @@
+*/5 * * * * /bin/sh /home/bupd/gitupdate
+# custom crons below this can be deleted.
+0 23 21 1 2 mpv ~/video.mp4
+30 18 22 1 3 mpv ~/video.mp4

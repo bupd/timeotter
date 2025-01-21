@@ -1,6 +1,6 @@
 # 🦦 TimeOtter 🦦 
 
-<img align="right" src="https://github.com/user-attachments/assets/073bf189-3c47-4ec3-bc60-97ed9d288b2a" width="400" height="410">
+<img align="right" src="artwork/image1.png" width="400" height="410">
 
 A utility that integrates with Google Calendar and helps you run scheduled calendar alarms and execute commands based on them.
 In other words `execute commands based on your calendars` 

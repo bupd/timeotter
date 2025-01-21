@@ -86,7 +86,7 @@ Once you have completed the configuration, you're ready to run **Time Otter** as
 To install **Time Otter** globally on your system, use the following command:
 
 ```bash
-go install github.com/bupd/timeotter@latest
+go install github.com/bupd/timeotter/cmd/timeotter@latest
 ```
 
 Make sure you have Go set up correctly in your environment before running the above command.

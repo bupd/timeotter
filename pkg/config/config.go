@@ -18,8 +18,8 @@ type Config struct {
 
 // Helper function to read the config file using Viper
 func ReadConfig() (*viper.Viper, error) {
-	// Resolve the tilde (~) in the path
-	configPath := os.ExpandEnv("~/.config/timeotter/config.toml")
+  dirname := GetHomeDir()
+	configPath := fmt.Sprintf("%s/.config/timeotter/config.toml", dirname)
 	// Initialize a new Viper instance
 	v := viper.New()
 	v.SetConfigFile(configPath)
@@ -54,4 +54,14 @@ func GetConfig() Config {
 	fmt.Printf("Token File: %s\n", config.TokenFile)
 
 	return config
+}
+
+func GetHomeDir() string {
+	dirname, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatalf("unable to get user home directory: %v", err)
+	}
+	fmt.Println(dirname)
+
+	return dirname
 }

@@ -31,8 +31,12 @@ func main() {
 	MaxRes = conf.MaxRes
 	TokenFile = conf.TokenFile
 
+	dirname := config.GetHomeDir()
+	credentialsFile := fmt.Sprintf("%s/.cal-credentials.json", dirname)
+	TokenFile = fmt.Sprintf("%s/%s", dirname, TokenFile)
+
 	ctx := context.Background()
-	b, err := os.ReadFile("credentials.json")
+	b, err := os.ReadFile(credentialsFile)
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}

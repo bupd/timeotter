@@ -265,7 +265,7 @@ func ClearCronJobs() error {
   #!/bin/bash
 
 	# Backup current crontab
-	crontab -l > crontab_backup.txt
+	crontab -l > ~/.crontab_backup.txt
 
 	# Remove all cron jobs below the comment
 	awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -

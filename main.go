@@ -25,21 +25,21 @@ var (
 )
 
 // Retrieve a token, saves the token, then returns the generated client.
-func getClient(config *oauth2.Config) *http.Client {
+func GetClient(config *oauth2.Config) *http.Client {
 	// The file token.json stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
 	// time.
-	tokFile := "token.json"
-	tok, err := tokenFromFile(tokFile)
+	tokFile := "~/.cal-token.json"
+	tok, err := TokenFromFile(tokFile)
 	if err != nil {
-		tok = getTokenFromWeb(config)
-		saveToken(tokFile, tok)
+		tok = GetTokenFromWeb(config)
+		SaveToken(tokFile, tok)
 	}
 	return config.Client(context.Background(), tok)
 }
 
 // Request a token from the web, then returns the retrieved token.
-func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
+func GetTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
 	fmt.Printf("Go to the following link in your browser then type the "+
 		"authorization code: \n%v\n", authURL)
@@ -57,7 +57,7 @@ func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 }
 
 // Retrieves a token from a local file.
-func tokenFromFile(file string) (*oauth2.Token, error) {
+func TokenFromFile(file string) (*oauth2.Token, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func tokenFromFile(file string) (*oauth2.Token, error) {
 }
 
 // Saves a token to a file path.
-func saveToken(path string, token *oauth2.Token) {
+func SaveToken(path string, token *oauth2.Token) {
 	fmt.Printf("Saving credential file to: %s\n", path)
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
@@ -91,7 +91,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	client := getClient(config)
+	client := GetClient(config)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
@@ -218,9 +218,6 @@ func AddCrons(cronJob string) error {
     echo "%s %s" >> "%s"
     `, cronJob, cmdToExec, cronLocation)
 
-	// should edit the above based on the linux or termux
-
-	// Execute the shell script
 	err := executeShellCommand(script)
 	if err != nil {
 		log.Fatal(err)
@@ -247,18 +244,6 @@ func GetCronLocation() string {
 }
 
 func ClearCronJobs() error {
-	// Shell script to backup the crontab and remove cron jobs below the comment
-	// script := `
-	// #!/bin/bash
-	//
-	// # Backup current crontab
-	// crontab -l > crontab_backup.txt
-	//
-	// # Remove all cron jobs below the comment
-	// awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -
-	// echo "# custom crons below this can be deleted." >> "/var/spool/cron/bupd"
-	// `
-
 	cronLocation := GetCronLocation()
 
 	script := fmt.Sprintf(`

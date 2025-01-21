@@ -1,11 +1,11 @@
 # TimeOtter: Calendar Alarm Manager
 
+<img align="right" src="https://github.com/user-attachments/assets/073bf189-3c47-4ec3-bc60-97ed9d288b2a" width="400" height="410">
+
 A utility that integrates with Google Calendar and helps you run scheduled calendar alarms and execute commands based on them.
 In other words `execute commands based on your calendars`
 
 <!-- <img align="right" src="https://github.com/user-attachments/assets/a7a13a30-be33-445f-b624-7fc93f4a3d00" width="400" height="410"> -->
-
-<img align="right" src="https://github.com/user-attachments/assets/073bf189-3c47-4ec3-bc60-97ed9d288b2a" width="400" height="410">
 
 ## Setup Instructions
 
@@ -29,7 +29,7 @@ Once you have the OAuth token, save it to the following location:
 ~/.cal-token.json
 ```
 
-### Step 2: Configure the Variables in `config.toml`
+## Step 2: Configure the Variables in `config.toml`
 
 After obtaining the OAuth token, configure the required variables in the `config.toml` file.
 
@@ -46,7 +46,7 @@ MaxRes     = 2                        # Number of results to fetch from Google C
 TokenFile  = "~/.cal-token.json"      # Path to your OAuth token
 ```
 
-### Step 3: Modify Crontab to Integrate with TimeOtter
+## Step 3: Modify Crontab to Integrate with TimeOtter
 
 In order for Time Otter to manage your calendar alarms, you need to add the following comment to the ==**end**== your crontab:
 
@@ -57,7 +57,7 @@ In order for Time Otter to manage your calendar alarms, you need to add the foll
 This comment marks the entry point for the app to schedule cron jobs.
 ### **Do not add any crons below this comment**, as these will be deleted when the app runs.
 
-#### Important Notes:
+## Important Notes:
 
 - Before making any changes to your crontab, **take a backup** of your existing cron jobs. You can do this by running:
 
@@ -67,7 +67,7 @@ This comment marks the entry point for the app to schedule cron jobs.
 
 - After adding the comment, you can proceed with running the application. Time Otter will automatically schedule your calendar-based alarms.
 
-### Step 4: Running the Application
+## Step 4: Running the Application
 
 Once you have completed the configuration, you're good to run the application. TimeOtter will fetch events from your Google Calendar and run the corresponding commands when the events are triggered.
 
@@ -81,7 +81,7 @@ go run time_otter.go
 
 Once you have completed the configuration, you're ready to run **Time Otter** as a cron job. This allows **Time Otter** to automatically check your Google Calendar and execute the corresponding commands on a regular basis.
 
-#### Step 4.1: Install Time Otter
+## Installation
 
 To install **Time Otter** globally on your system, use the following command:
 
@@ -91,7 +91,7 @@ go install github.com/bupd/timeotter@latest
 
 Make sure you have Go set up correctly in your environment before running the above command.
 
-#### Step 4.2: Add the Cron Job
+## Step 4.2: Add the Cron Job
 
 Once **Time Otter** is installed, you need to add a cron job that runs **Time Otter** at regular intervals. This ensures that your calendar events are checked, and the configured commands are executed as scheduled.
 

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	cal "github.com/bupd/timeotter/pkg/calendar"
+	"github.com/bupd/timeotter/pkg/config"
 	"github.com/bupd/timeotter/pkg/oauth"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/calendar/v3"
@@ -16,13 +17,20 @@ import (
 )
 
 var (
-	CalendarID string = "bupdprasanth@gmail.com"
-	CmdToExec  string = "mpv ~/video.mp4"
-	MaxRes     int64  = 2
-	TokenFile    string = "~/.cal-token.json"
+	CalendarID string
+	CmdToExec  string
+	MaxRes     int64
+	TokenFile  string
 )
 
 func main() {
+	conf := config.GetConfig()
+
+	CalendarID = conf.CalendarID
+	CmdToExec = conf.CmdToExec
+	MaxRes = conf.MaxRes
+	TokenFile = conf.TokenFile
+
 	ctx := context.Background()
 	b, err := os.ReadFile("credentials.json")
 	if err != nil {

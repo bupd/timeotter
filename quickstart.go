@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+
 	"os/user"
 	"time"
 
@@ -210,7 +211,7 @@ func ClearCronJobs() error {
 	echo "# custom crons below this can be deleted." >> "/var/spool/cron/bupd"
 	`
 
-  // should edit the above based on the linux or termux
+	// should edit the above based on the linux or termux
 
 	// Execute the shell script
 	err := executeShellCommand(script)

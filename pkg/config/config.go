@@ -61,7 +61,7 @@ func GetHomeDir() string {
 	if err != nil {
 		log.Fatalf("unable to get user home directory: %v", err)
 	}
-	fmt.Println(dirname)
+	// fmt.Println(dirname)
 
 	return dirname
 }

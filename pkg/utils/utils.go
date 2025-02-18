@@ -17,6 +17,6 @@ func ExecuteShellCommand(command string) error {
 	}
 
 	// Print the output if the command was successful
-	fmt.Println("Output:", string(output))
+	// fmt.Println("Output:", string(output))
 	return nil
 }

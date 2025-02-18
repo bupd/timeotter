@@ -25,7 +25,7 @@ func AddCrons(cronJob, cmdToExec string) error {
 
 	err := utils.ExecuteShellCommand(script)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to execute cron add command: %v", err)
 	}
 
 	return nil
@@ -65,7 +65,7 @@ func ClearCronJobs() error {
 	// Execute the shell script
 	err := utils.ExecuteShellCommand(script)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to execute cron remove command: %v", err)
 	}
 
 	return nil

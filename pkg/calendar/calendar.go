@@ -21,14 +21,12 @@ func EventParser(events *calendar.Events, cmdToExec string) {
 		if date == "" {
 			date = item.Start.Date
 		}
-		fmt.Printf("cron string: %s:- ", ConvertTimeToCron(date))
-		fmt.Printf("%v (%v)\n", item.Summary, date)
+		// fmt.Printf("cron string: %s:- ", ConvertTimeToCron(date))
+		// fmt.Printf("%v (%v)\n", item.Summary, date)
 		cronStr := ConvertTimeToCron(date)
 		err := cron.AddCrons(cronStr, cmdToExec)
 		if err != nil {
-			log.Fatal(err)
-		} else {
-			fmt.Println("Cron job added successfully!")
+      log.Fatalf("unable to add crons: %v",err)
 		}
 	}
 }

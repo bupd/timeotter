@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -53,24 +52,24 @@ func main() {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
-	calList := srv.CalendarList.List()
-	kumar := srv.CalendarList.List().Fields()
+	// calList := srv.CalendarList.List()
+	// kumar := srv.CalendarList.List().Fields()
 	// Marshal the struct to a JSON string
-	jsonData, err := json.MarshalIndent(calList, "", "  ")
-	if err != nil {
-		log.Fatalf("Error marshaling struct: %v", err)
-	}
+	// jsonData, err := json.MarshalIndent(calList, "", "  ")
+	// if err != nil {
+	// 	log.Fatalf("Error marshaling struct: %v", err)
+	// }
+
+	// // Print the marshaled output
+	// fmt.Println(string(jsonData))
+
+	// jsonDatas, err := json.MarshalIndent(kumar, "", "  ")
+	// if err != nil {
+	// 	log.Fatalf("Error marshaling struct: %v", err)
+	// }
 
 	// Print the marshaled output
-	fmt.Println(string(jsonData))
-
-	jsonDatas, err := json.MarshalIndent(kumar, "", "  ")
-	if err != nil {
-		log.Fatalf("Error marshaling struct: %v", err)
-	}
-
-	// Print the marshaled output
-	fmt.Println(string(jsonDatas))
+	// fmt.Println(string(jsonDatas))
 	t := time.Now().Format(time.RFC3339)
 	events, err := srv.Events.List(CalendarID).ShowDeleted(false).
 		SingleEvents(true).TimeMin(t).MaxResults(MaxRes).OrderBy("startTime").Do()

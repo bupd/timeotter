@@ -48,10 +48,10 @@ func GetConfig() Config {
 	}
 
 	// Now use the loaded config values
-	fmt.Printf("Calendar ID: %s\n", config.CalendarID)
-	fmt.Printf("Command to Execute: %s\n", config.CmdToExec)
-	fmt.Printf("Max Resolution: %d\n", config.MaxRes)
 	fmt.Printf("Token File: %s\n", config.TokenFile)
+	fmt.Printf("Calendar ID: %s\n", config.CalendarID)
+	fmt.Printf("Max Events: %d\n", config.MaxRes)
+	fmt.Printf("Command to Execute: %s\n", config.CmdToExec)
 
 	return config
 }

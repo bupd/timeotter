@@ -26,9 +26,7 @@ func EventParser(events *calendar.Events, cmdToExec string) {
 		cronStr := ConvertTimeToCron(date)
 		err := cron.AddCrons(cronStr, cmdToExec)
 		if err != nil {
-			log.Fatal(err)
-		} else {
-			fmt.Println("Cron job added successfully!")
+      log.Fatalf("unable to add crons: %v",err)
 		}
 	}
 }

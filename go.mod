@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/spf13/viper v1.20.1
-	golang.org/x/oauth2 v0.29.0
+	golang.org/x/oauth2 v0.30.0
 	google.golang.org/api v0.231.0
 )
 

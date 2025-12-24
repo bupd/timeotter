@@ -1,3 +1,4 @@
+// Package cron provides utilities for managing system crontab entries.
 package cron
 
 import (
@@ -7,9 +8,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/bupd/timeotter/pkg/utils"
+	"github.com/bupd/timeotter/pkg/shell"
 )
 
+// AddCrons appends a new cron job entry to the system crontab.
 func AddCrons(cronJob, cmdToExec string) error {
 	cronLocation := GetCronLocation()
 
@@ -24,7 +26,7 @@ func AddCrons(cronJob, cmdToExec string) error {
     echo "%s %s" >> "%s"
     `, cronJob, cmdToExec, cronLocation)
 
-	err := utils.ExecuteShellCommand(script)
+	err := shell.ExecuteShellCommand(script)
 	if err != nil {
 		log.Fatalf("failed to execute cron add command: %v", err)
 	}
@@ -32,6 +34,7 @@ func AddCrons(cronJob, cmdToExec string) error {
 	return nil
 }
 
+// GetCronLocation returns the platform-specific path to the user's crontab file.
 func GetCronLocation() string {
 	var cronLocation string
 
@@ -59,6 +62,7 @@ func escapeAwkRegex(s string) string {
 	return result
 }
 
+// ClearCronJobs backs up and removes all cron jobs below the specified marker.
 func ClearCronJobs(backupFile string, cronMarker string) error {
 	cronLocation := GetCronLocation()
 	escapedMarker := escapeAwkRegex(cronMarker)
@@ -75,7 +79,7 @@ func ClearCronJobs(backupFile string, cronMarker string) error {
     `, backupFile, escapedMarker, cronMarker, cronLocation)
 
 	// Execute the shell script
-	err := utils.ExecuteShellCommand(script)
+	err := shell.ExecuteShellCommand(script)
 	if err != nil {
 		log.Fatalf("failed to execute cron remove command: %v", err)
 	}

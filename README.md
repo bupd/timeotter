@@ -42,21 +42,29 @@ Here's an example of what you need to set:
 ```toml
 # config.toml
 
-CalendarID = "your-email@gmail.com"  # Replace with your Google Calendar email address or primary for default calendar
-CmdToExec  = "mpv ~/video.mp4"       # Replace with the command you wish to execute when the alarm triggers
-MaxRes     = 2                        # Number of results to fetch from Google Calendar API (adjust as necessary) advised to set below 10 for safety
-TokenFile  = "~/.cal-token.json"      # Path to your OAuth token
+# Required settings
+CalendarID = "your-email@gmail.com"  # Replace with your Google Calendar email or "primary" for default
+CmdToExec  = "mpv ~/video.mp4"       # Command to execute when alarm triggers
+TokenFile  = "~/.cal-token.json"     # Path to OAuth token (~ is expanded to home directory)
+
+# Optional settings (with defaults)
+MaxRes               = 5                                    # Number of events to fetch (min: 1, max: 100, default: 5)
+CredentialsFile      = "~/.cal-credentials.json"            # OAuth credentials file path
+BackupFile           = "~/.crontab_backup.txt"              # Crontab backup location
+TriggerBeforeMinutes = 5                                    # Minutes before event to trigger alarm (default: 5)
+CronMarker           = "# custom crons below this can be deleted."  # Delimiter for managed crons
+ShowDeleted          = false                                # Include deleted events (default: false)
 ```
 
 ## Step 3: Modify Crontab to Integrate with TimeOtter ⏳
 
-In order for Time Otter to manage your calendar alarms, you need to add the following comment to the ==**end**== your crontab:
+In order for Time Otter to manage your calendar alarms, you need to add the following comment to the **end** of your crontab:
 
 ```sh
 # custom crons below this can be deleted.
 ```
 
-This comment marks the entry point for the app to schedule cron jobs.
+This comment marks the entry point for the app to schedule cron jobs. You can customize this marker via the `CronMarker` config option.
 ### **Do not add any crons below this comment**, as these will be deleted when the app runs.
 
 ## 🚨🚨 Important Notes 🚨🚨:

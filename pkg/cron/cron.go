@@ -5,6 +5,7 @@ import (
 	"log"
 	"os/user"
 	"runtime"
+	"strings"
 
 	"github.com/bupd/timeotter/pkg/utils"
 )
@@ -48,19 +49,30 @@ func GetCronLocation() string {
 	return cronLocation
 }
 
-func ClearCronJobs() error {
+// escapeAwkRegex escapes special regex characters for use in awk patterns
+func escapeAwkRegex(s string) string {
+	special := []string{"\\", ".", "*", "+", "?", "[", "]", "^", "$", "(", ")", "{", "}", "|"}
+	result := s
+	for _, char := range special {
+		result = strings.ReplaceAll(result, char, "\\"+char)
+	}
+	return result
+}
+
+func ClearCronJobs(backupFile string, cronMarker string) error {
 	cronLocation := GetCronLocation()
+	escapedMarker := escapeAwkRegex(cronMarker)
 
 	script := fmt.Sprintf(`
   #!/bin/bash
 
 	# Backup current crontab
-	crontab -l > ~/.crontab_backup.txt
+	crontab -l > "%s"
 
 	# Remove all cron jobs below the comment
-	awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -
-	echo "# custom crons below this can be deleted." >> "%s"
-    `, cronLocation)
+	awk '/%s/{f=1} !f' <(crontab -l) | crontab -
+	echo "%s" >> "%s"
+    `, backupFile, escapedMarker, cronMarker, cronLocation)
 
 	// Execute the shell script
 	err := utils.ExecuteShellCommand(script)

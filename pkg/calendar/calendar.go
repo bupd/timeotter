@@ -10,8 +10,8 @@ import (
 )
 
 // for parsing calendar events
-func EventParser(events *calendar.Events, cmdToExec string) {
-	err := cron.ClearCronJobs()
+func EventParser(events *calendar.Events, cmdToExec string, backupFile string, cronMarker string, triggerBeforeMinutes int) {
+	err := cron.ClearCronJobs(backupFile, cronMarker)
 	if err != nil {
 		log.Fatalf("clearing cron jobs failed: %v", err)
 	}
@@ -23,16 +23,17 @@ func EventParser(events *calendar.Events, cmdToExec string) {
 		}
 		// fmt.Printf("cron string: %s:- ", ConvertTimeToCron(date))
 		// fmt.Printf("%v (%v)\n", item.Summary, date)
-		cronStr := ConvertTimeToCron(date)
+		cronStr := ConvertTimeToCron(date, triggerBeforeMinutes)
 		err := cron.AddCrons(cronStr, cmdToExec)
 		if err != nil {
-      log.Fatalf("unable to add crons: %v",err)
+			log.Fatalf("unable to add crons: %v", err)
 		}
 	}
 }
 
 // ConvertTimeToCron takes a time in string format and returns the cron expression.
-func ConvertTimeToCron(timeStr string) string {
+// triggerBeforeMinutes specifies how many minutes before the event to trigger.
+func ConvertTimeToCron(timeStr string, triggerBeforeMinutes int) string {
 	// Parse the input time string
 	// Try multiple layouts to parse the time string
 	layouts := []string{
@@ -50,8 +51,8 @@ func ConvertTimeToCron(timeStr string) string {
 		}
 	}
 
-	// Subtract 5 minutes from the given time
-	t = t.Add(-5 * time.Minute)
+	// Subtract triggerBeforeMinutes from the given time
+	t = t.Add(-time.Duration(triggerBeforeMinutes) * time.Minute)
 
 	// Extract time components
 	_ = t.Second()

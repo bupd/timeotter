@@ -57,6 +57,28 @@ All options in `pkg/config/config.go`:
 go build -o timeotter cmd/timeotter/main.go
 ```
 
+## CI/CD Workflows
+
+Located in `.github/workflows/`:
+
+- `build.yml` - Runs on PRs: build, test, lint with golangci-lint
+- `test-release.yml` - Runs on PRs/branches: GoReleaser dry-run validation
+- `release.yml` - Runs on tag push (`v*`): Full release with GoReleaser
+- `actionlint.yml` - Validates workflow files on changes
+
+## Release Process
+
+1. Tag a release: `git tag v1.0.0 && git push origin v1.0.0`
+2. GoReleaser builds binaries for linux/darwin (amd64/arm64)
+3. Creates GitHub release with checksums and SBOMs
+4. Updates Homebrew formula on `homebrew` branch (same repo)
+
+## Homebrew Install
+
+```bash
+brew install bupd/timeotter/timeotter
+```
+
 ## Dependencies
 
 - spf13/viper (config)

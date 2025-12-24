@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
+
+project_name: timeotter
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - id: timeotter
+    main: ./cmd/timeotter
+    binary: timeotter
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - id: default
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- .Arch }}
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+sboms:
+  - artifacts: archive
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^ci:"
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: "New Features"
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug Fixes"
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: "Performance Improvements"
+      regexp: '^.*?perf(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: "Other Changes"
+      order: 999
+
+release:
+  github:
+    owner: bupd
+    name: timeotter
+  draft: false
+  prerelease: auto
+  mode: replace
+  name_template: "{{ .ProjectName }} v{{ .Version }}"
+  header: |
+    ## What's Changed
+
+  footer: |
+    ---
+    **Full Changelog**: https://github.com/bupd/timeotter/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+    ## Installation
+
+    ### Using Go
+    ```bash
+    go install github.com/bupd/timeotter/cmd/timeotter@{{ .Tag }}
+    ```
+
+    ### Using Homebrew (macOS/Linux)
+    ```bash
+    brew install --no-quarantine bupd/timeotter/timeotter
+    ```
+
+    ### Binary Download
+    Download the appropriate binary for your platform from the assets below.
+
+brews:
+  - name: timeotter
+    repository:
+      owner: bupd
+      name: timeotter
+      branch: homebrew
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/bupd/timeotter"
+    description: "Google Calendar to cron sync"
+    license: "MIT"
+    install: |
+      bin.install "timeotter"
+    test: |
+      system "#{bin}/timeotter", "--help"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+
+announce:
+  skip: true

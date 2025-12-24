@@ -11,6 +11,11 @@ Google Calendar integration utility that syncs calendar events to cron jobs.
 - Prefer conciseness over grammar
 - No tabs in markdown
 
+## Documentation Guidelines
+
+- Update README.md when logic or config options change
+- Keep docs in sync with code changes
+
 ## Project Structure
 
 ```
@@ -28,17 +33,23 @@ pkg/utils/utils.go       - Shell command execution
 
 ## Key Files
 
-- Credentials: `~/.cal-credentials.json`
+- Credentials: configurable via `CredentialsFile` (default: `~/.cal-credentials.json`)
 - Token: configurable via `TokenFile`
-- Cron backup: `~/.crontab_backup.txt`
+- Cron backup: configurable via `BackupFile` (default: `~/.crontab_backup.txt`)
 
-## Hardcoded Values to Make Configurable
+## Config Options
 
-- 5-minute event advance warning in `calendar/calendar.go:54`
-- Credentials file path in `main.go:34`
-- Cron delimiter string in `cron/cron.go:62`
-- Backup file location in `cron/cron.go:58`
-- API params (ShowDeleted, SingleEvents, OrderBy) in `main.go:74-75`
+All options in `pkg/config/config.go`:
+
+- `CalendarID` - Google Calendar ID
+- `CmdToExec` - Command to run on event trigger
+- `MaxRes` - Max events to fetch (1-100, default: 5)
+- `TokenFile` - OAuth token path
+- `CredentialsFile` - OAuth credentials path
+- `BackupFile` - Crontab backup location
+- `TriggerBeforeMinutes` - Minutes before event to trigger alarm (default: 5)
+- `CronMarker` - Delimiter comment for managed crons
+- `ShowDeleted` - Include deleted events (default: false)
 
 ## Build
 

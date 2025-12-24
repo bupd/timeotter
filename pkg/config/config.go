@@ -1,3 +1,4 @@
+// Package config handles configuration loading and validation for timeotter.
 package config
 
 import (
@@ -22,7 +23,7 @@ type Config struct {
 	ShowDeleted          bool   `mapstructure:"ShowDeleted"`
 }
 
-// Helper function to read the config file using Viper
+// ReadConfig reads the configuration file using Viper and returns the config instance.
 func ReadConfig() (*viper.Viper, error) {
 	dirname := GetHomeDir()
 	configPath := fmt.Sprintf("%s/.config/timeotter/config.toml", dirname)
@@ -41,7 +42,7 @@ func ReadConfig() (*viper.Viper, error) {
 
 	// Read the configuration file
 	if err := v.ReadInConfig(); err != nil {
-		return nil, fmt.Errorf("error reading config file: %w. Please ensure the config file exists.", err)
+		return nil, fmt.Errorf("reading config file: %w", err)
 	}
 
 	return v, nil
@@ -92,7 +93,7 @@ func ValidateConfig(config *Config) error {
 	return nil
 }
 
-// Reads config and gives the config
+// GetConfig loads, validates and returns the application configuration.
 func GetConfig() Config {
 	// Load the config file using Viper
 	v, err := ReadConfig()
@@ -120,6 +121,7 @@ func GetConfig() Config {
 	return config
 }
 
+// GetHomeDir returns the current user's home directory path.
 func GetHomeDir() string {
 	dirname, err := os.UserHomeDir()
 	if err != nil {

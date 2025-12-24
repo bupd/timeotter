@@ -1,3 +1,4 @@
+// Package main is the entry point for the timeotter CLI application.
 package main
 
 import (
@@ -5,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	cal "github.com/bupd/timeotter/pkg/calendar"
@@ -41,7 +43,7 @@ func main() {
 	ShowDeleted = conf.ShowDeleted
 
 	ctx := context.Background()
-	b, err := os.ReadFile(CredentialsFile)
+	b, err := os.ReadFile(filepath.Clean(CredentialsFile))
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}

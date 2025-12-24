@@ -94,27 +94,24 @@ release:
 
     ### Using Homebrew (macOS/Linux)
     ```bash
-    brew install --no-quarantine bupd/timeotter/timeotter
+    brew install bupd/timeotter/timeotter
     ```
 
     ### Binary Download
     Download the appropriate binary for your platform from the assets below.
 
-brews:
+homebrew_casks:
   - name: timeotter
+    binaries:
+      - timeotter
+    homepage: "https://github.com/bupd/timeotter"
+    description: "Google Calendar to cron sync"
     repository:
       owner: bupd
       name: timeotter
       branch: homebrew
       token: "{{ .Env.GITHUB_TOKEN }}"
-    directory: Formula
-    homepage: "https://github.com/bupd/timeotter"
-    description: "Google Calendar to cron sync"
-    license: "MIT"
-    install: |
-      bin.install "timeotter"
-    test: |
-      system "#{bin}/timeotter", "--help"
+    directory: Casks
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com

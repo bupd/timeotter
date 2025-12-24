@@ -71,7 +71,7 @@ Located in `.github/workflows/`:
 1. Tag a release: `git tag v1.0.0 && git push origin v1.0.0`
 2. GoReleaser builds binaries for linux/darwin (amd64/arm64)
 3. Creates GitHub release with checksums and SBOMs
-4. Updates Homebrew formula on `homebrew` branch (same repo)
+4. Updates Homebrew cask on `homebrew` branch (same repo)
 
 ## Homebrew Install
 

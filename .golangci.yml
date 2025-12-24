@@ -47,7 +47,7 @@ formatters:
     - gofmt
     - goimports
 
-linters-settings:
+settings:
   govet:
     enable-all: true
 
@@ -68,6 +68,5 @@ linters-settings:
     min-occurrences: 3
 
 issues:
-  exclude-use-default: false
   max-issues-per-linter: 0
   max-same-issues: 0

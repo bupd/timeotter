@@ -48,19 +48,19 @@ func GetCronLocation() string {
 	return cronLocation
 }
 
-func ClearCronJobs() error {
+func ClearCronJobs(backupFile string, cronMarker string) error {
 	cronLocation := GetCronLocation()
 
 	script := fmt.Sprintf(`
   #!/bin/bash
 
 	# Backup current crontab
-	crontab -l > ~/.crontab_backup.txt
+	crontab -l > "%s"
 
 	# Remove all cron jobs below the comment
-	awk '/# custom crons below this can be deleted/{f=1} !f' <(crontab -l) | crontab -
-	echo "# custom crons below this can be deleted." >> "%s"
-    `, cronLocation)
+	awk '/%s/{f=1} !f' <(crontab -l) | crontab -
+	echo "%s" >> "%s"
+    `, backupFile, cronMarker, cronMarker, cronLocation)
 
 	// Execute the shell script
 	err := utils.ExecuteShellCommand(script)

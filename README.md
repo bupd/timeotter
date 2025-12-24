@@ -45,7 +45,7 @@ Here's an example of what you need to set:
 # Required settings
 CalendarID = "your-email@gmail.com"  # Replace with your Google Calendar email or "primary" for default
 CmdToExec  = "mpv ~/video.mp4"       # Command to execute when alarm triggers
-TokenFile  = ".cal-token.json"       # Path to OAuth token (relative to home directory)
+TokenFile  = "~/.cal-token.json"     # Path to OAuth token (~ is expanded to home directory)
 
 # Optional settings (with defaults)
 MaxRes               = 5                                    # Number of events to fetch (min: 1, max: 100, default: 5)

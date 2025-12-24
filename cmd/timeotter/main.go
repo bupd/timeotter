@@ -40,9 +40,6 @@ func main() {
 	CronMarker = conf.CronMarker
 	ShowDeleted = conf.ShowDeleted
 
-	dirname := config.GetHomeDir()
-	TokenFile = fmt.Sprintf("%s/%s", dirname, TokenFile)
-
 	ctx := context.Background()
 	b, err := os.ReadFile(CredentialsFile)
 	if err != nil {

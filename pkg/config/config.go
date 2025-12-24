@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -46,8 +47,30 @@ func ReadConfig() (*viper.Viper, error) {
 	return v, nil
 }
 
+// ExpandPath expands ~ to the user's home directory
+func ExpandPath(path string) string {
+	if strings.HasPrefix(path, "~/") {
+		return strings.Replace(path, "~", GetHomeDir(), 1)
+	}
+	if path == "~" {
+		return GetHomeDir()
+	}
+	return path
+}
+
 // ValidateConfig validates config values and applies constraints
 func ValidateConfig(config *Config) error {
+	// Validate required fields
+	if config.CalendarID == "" {
+		return fmt.Errorf("CalendarID is required")
+	}
+	if config.CmdToExec == "" {
+		return fmt.Errorf("CmdToExec is required")
+	}
+	if config.TokenFile == "" {
+		return fmt.Errorf("TokenFile is required")
+	}
+
 	// Validate MaxRes: min 1, max 100
 	if config.MaxRes < 1 {
 		config.MaxRes = 1
@@ -60,6 +83,11 @@ func ValidateConfig(config *Config) error {
 	if config.TriggerBeforeMinutes < 0 {
 		config.TriggerBeforeMinutes = 0
 	}
+
+	// Expand ~ in file paths
+	config.CredentialsFile = ExpandPath(config.CredentialsFile)
+	config.BackupFile = ExpandPath(config.BackupFile)
+	config.TokenFile = ExpandPath(config.TokenFile)
 
 	return nil
 }

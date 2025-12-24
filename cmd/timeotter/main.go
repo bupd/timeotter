@@ -16,10 +16,15 @@ import (
 )
 
 var (
-	CalendarID string
-	CmdToExec  string
-	MaxRes     int64
-	TokenFile  string
+	CalendarID           string
+	CmdToExec            string
+	MaxRes               int64
+	TokenFile            string
+	CredentialsFile      string
+	BackupFile           string
+	TriggerBeforeMinutes int
+	CronMarker           string
+	ShowDeleted          bool
 )
 
 func main() {
@@ -29,13 +34,17 @@ func main() {
 	CmdToExec = conf.CmdToExec
 	MaxRes = conf.MaxRes
 	TokenFile = conf.TokenFile
+	CredentialsFile = conf.CredentialsFile
+	BackupFile = conf.BackupFile
+	TriggerBeforeMinutes = conf.TriggerBeforeMinutes
+	CronMarker = conf.CronMarker
+	ShowDeleted = conf.ShowDeleted
 
 	dirname := config.GetHomeDir()
-	credentialsFile := fmt.Sprintf("%s/.cal-credentials.json", dirname)
 	TokenFile = fmt.Sprintf("%s/%s", dirname, TokenFile)
 
 	ctx := context.Background()
-	b, err := os.ReadFile(credentialsFile)
+	b, err := os.ReadFile(CredentialsFile)
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
@@ -71,7 +80,7 @@ func main() {
 	// Print the marshaled output
 	// fmt.Println(string(jsonDatas))
 	t := time.Now().Format(time.RFC3339)
-	events, err := srv.Events.List(CalendarID).ShowDeleted(false).
+	events, err := srv.Events.List(CalendarID).ShowDeleted(ShowDeleted).
 		SingleEvents(true).TimeMin(t).MaxResults(MaxRes).OrderBy("startTime").Do()
 	if err != nil {
 		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
@@ -79,6 +88,6 @@ func main() {
 	if len(events.Items) == 0 {
 		fmt.Println("No upcoming events found.")
 	} else {
-		cal.EventParser(events, CmdToExec)
+		cal.EventParser(events, CmdToExec, BackupFile, CronMarker, TriggerBeforeMinutes)
 	}
 }

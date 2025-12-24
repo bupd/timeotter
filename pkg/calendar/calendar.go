@@ -1,3 +1,4 @@
+// Package calendar provides utilities for parsing Google Calendar events.
 package calendar
 
 import (
@@ -9,7 +10,7 @@ import (
 	"google.golang.org/api/calendar/v3"
 )
 
-// for parsing calendar events
+// EventParser parses calendar events and creates cron jobs for each event.
 func EventParser(events *calendar.Events, cmdToExec string, backupFile string, cronMarker string, triggerBeforeMinutes int) {
 	err := cron.ClearCronJobs(backupFile, cronMarker)
 	if err != nil {

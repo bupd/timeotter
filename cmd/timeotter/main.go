@@ -1,3 +1,4 @@
+// Package main is the entry point for the timeotter CLI application.
 package main
 
 import (
@@ -5,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	cal "github.com/bupd/timeotter/pkg/calendar"
@@ -16,32 +18,32 @@ import (
 )
 
 var (
-	CalendarID           string
-	CmdToExec            string
-	MaxRes               int64
-	TokenFile            string
-	CredentialsFile      string
-	BackupFile           string
-	TriggerBeforeMinutes int
-	CronMarker           string
-	ShowDeleted          bool
+	calendarID           string
+	cmdToExec            string
+	maxRes               int64
+	tokenFile            string
+	credentialsFile      string
+	backupFile           string
+	triggerBeforeMinutes int
+	cronMarker           string
+	showDeleted          bool
 )
 
 func main() {
 	conf := config.GetConfig()
 
-	CalendarID = conf.CalendarID
-	CmdToExec = conf.CmdToExec
-	MaxRes = conf.MaxRes
-	TokenFile = conf.TokenFile
-	CredentialsFile = conf.CredentialsFile
-	BackupFile = conf.BackupFile
-	TriggerBeforeMinutes = conf.TriggerBeforeMinutes
-	CronMarker = conf.CronMarker
-	ShowDeleted = conf.ShowDeleted
+	calendarID = conf.CalendarID
+	cmdToExec = conf.CmdToExec
+	maxRes = conf.MaxRes
+	tokenFile = conf.TokenFile
+	credentialsFile = conf.CredentialsFile
+	backupFile = conf.BackupFile
+	triggerBeforeMinutes = conf.TriggerBeforeMinutes
+	cronMarker = conf.CronMarker
+	showDeleted = conf.ShowDeleted
 
 	ctx := context.Background()
-	b, err := os.ReadFile(CredentialsFile)
+	b, err := os.ReadFile(filepath.Clean(credentialsFile))
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
@@ -51,7 +53,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	client := oauth.GetClient(config, TokenFile)
+	client := oauth.GetClient(config, tokenFile)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
@@ -77,14 +79,14 @@ func main() {
 	// Print the marshaled output
 	// fmt.Println(string(jsonDatas))
 	t := time.Now().Format(time.RFC3339)
-	events, err := srv.Events.List(CalendarID).ShowDeleted(ShowDeleted).
-		SingleEvents(true).TimeMin(t).MaxResults(MaxRes).OrderBy("startTime").Do()
+	events, err := srv.Events.List(calendarID).ShowDeleted(showDeleted).
+		SingleEvents(true).TimeMin(t).MaxResults(maxRes).OrderBy("startTime").Do()
 	if err != nil {
 		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
 	}
 	if len(events.Items) == 0 {
 		fmt.Println("No upcoming events found.")
 	} else {
-		cal.EventParser(events, CmdToExec, BackupFile, CronMarker, TriggerBeforeMinutes)
+		cal.EventParser(events, cmdToExec, backupFile, cronMarker, triggerBeforeMinutes)
 	}
 }

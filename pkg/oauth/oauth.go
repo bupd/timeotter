@@ -1,3 +1,4 @@
+// Package oauth provides OAuth2 authentication utilities for Google Calendar.
 package oauth
 
 import (
@@ -7,11 +8,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"golang.org/x/oauth2"
 )
 
-// Retrieve a token, saves the token, then returns the generated client.
+// GetClient retrieves a token, saves it, and returns the generated HTTP client.
 func GetClient(config *oauth2.Config, tokFile string) *http.Client {
 	// The file token.json stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
@@ -25,7 +27,7 @@ func GetClient(config *oauth2.Config, tokFile string) *http.Client {
 	return config.Client(context.Background(), tok)
 }
 
-// Request a token from the web, then returns the retrieved token.
+// GetTokenFromWeb requests a token via browser authorization and returns it.
 func GetTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
 	fmt.Printf("Go to the following link in your browser then type the "+
@@ -43,25 +45,38 @@ func GetTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	return tok
 }
 
-// Retrieves a token from a local file.
-func TokenFromFile(file string) (*oauth2.Token, error) {
-	f, err := os.Open(file)
+// TokenFromFile retrieves a token from a local file.
+func TokenFromFile(file string) (tok *oauth2.Token, err error) {
+	f, err := os.Open(filepath.Clean(file))
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
-	tok := &oauth2.Token{}
+	defer func() {
+		if cerr := f.Close(); cerr != nil && err == nil {
+			err = cerr
+		}
+	}()
+	tok = &oauth2.Token{}
 	err = json.NewDecoder(f).Decode(tok)
 	return tok, err
 }
 
-// Saves a token to a file path.
+// SaveToken saves a token to a file path.
 func SaveToken(path string, token *oauth2.Token) {
-	fmt.Printf("Saving credential file to: %s\n", path)
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	cleanPath := filepath.Clean(path)
+	fmt.Printf("Saving credential file to: %s\n", cleanPath)
+	f, err := os.OpenFile(cleanPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		log.Fatalf("Unable to cache oauth token: %v", err)
 	}
-	defer f.Close()
-	json.NewEncoder(f).Encode(token)
+	if err := json.NewEncoder(f).Encode(token); err != nil {
+		closeErr := f.Close()
+		if closeErr != nil {
+			log.Fatalf("Unable to encode oauth token: %v (close error: %v)", err, closeErr)
+		}
+		log.Fatalf("Unable to encode oauth token: %v", err)
+	}
+	if err := f.Close(); err != nil {
+		log.Fatalf("Unable to close token file: %v", err)
+	}
 }

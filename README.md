@@ -1,4 +1,30 @@
-# 🦦 TimeOtter 🦦 
+# 🦦 TimeOtter 🦦
+
+[![GitHub Release](https://img.shields.io/github/v/release/bupd/timeotter?style=flat-square&logo=github&color=blue)](https://github.com/bupd/timeotter/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/bupd/timeotter?style=flat-square&logo=go)](https://go.dev/)
+[![License](https://img.shields.io/github/license/bupd/timeotter?style=flat-square&color=green)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bupd/timeotter?style=flat-square)](https://goreportcard.com/report/github.com/bupd/timeotter)
+
+[![Build](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/build.yml?style=flat-square&logo=github&label=build)](https://github.com/bupd/timeotter/actions/workflows/build.yml)
+[![Test](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/test.yml?style=flat-square&logo=github&label=test)](https://github.com/bupd/timeotter/actions/workflows/test.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/lint.yml?style=flat-square&logo=github&label=lint)](https://github.com/bupd/timeotter/actions/workflows/lint.yml)
+[![Docs](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/docs.yml?style=flat-square&logo=github&label=docs)](https://github.com/bupd/timeotter/actions/workflows/docs.yml)
+
+[![GitHub Stars](https://img.shields.io/github/stars/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/issues)
+[![GitHub PRs](https://img.shields.io/github/issues-pr/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/pulls)
+
+[![Homebrew](https://img.shields.io/badge/homebrew-available-orange?style=flat-square&logo=homebrew)](https://github.com/bupd/timeotter#installation)
+[![Go Install](https://img.shields.io/badge/go%20install-available-00ADD8?style=flat-square&logo=go)](https://github.com/bupd/timeotter#installation)
+[![Platform Linux](https://img.shields.io/badge/platform-linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://github.com/bupd/timeotter/releases)
+[![Platform macOS](https://img.shields.io/badge/platform-macOS-000000?style=flat-square&logo=apple)](https://github.com/bupd/timeotter/releases)
+
+[![Documentation](https://img.shields.io/badge/docs-timeotter.bupd.xyz-blue?style=flat-square&logo=readme)](https://timeotter.bupd.xyz)
+[![Made with Go](https://img.shields.io/badge/made%20with-Go-00ADD8?style=flat-square&logo=go)](https://go.dev/)
+[![Google Calendar](https://img.shields.io/badge/Google%20Calendar-API-4285F4?style=flat-square&logo=google-calendar)](https://developers.google.com/calendar)
+
+---
 
 <img align="right" src="artwork/image1.png" width="400" height="410">
 

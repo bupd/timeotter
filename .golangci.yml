@@ -1,0 +1,57 @@
+version: "2"
+
+run:
+  timeout: 5m
+  go: "1.24"
+
+linters:
+  enable:
+    # Default linters
+    - errcheck
+    - govet
+    - ineffassign
+    - unused
+
+    # Security
+    - gosec
+
+    # Bug detection
+    - bodyclose
+    - nilerr
+    - nilnil
+
+    # Style
+    - misspell
+    - whitespace
+
+    # Code complexity
+    - gocyclo
+    - gocognit
+    - nestif
+
+    # Code quality
+    - gocritic
+    - revive
+    - unconvert
+    - unparam
+    - wastedassign
+    - goconst
+    - asciicheck
+    - bidichk
+    - durationcheck
+    - usestdlibvars
+    - prealloc
+
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+      - path: testutil
+        linters:
+          - gosec
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

@@ -140,3 +140,6 @@ token.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Lock files (using bun.lock instead)
+package-lock.json

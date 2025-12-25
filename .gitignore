@@ -131,3 +131,6 @@ dist
 
 credentials.json
 token.json
+
+# Astro
+.astro/

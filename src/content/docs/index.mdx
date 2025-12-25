@@ -1,0 +1,47 @@
+---
+title: TimeOtter
+description: Calendar-driven task execution for your system
+template: splash
+hero:
+  tagline: Execute commands based on your Google Calendar events. Set it once, forget forever.
+  image:
+    file: ../../assets/otter-logo.png
+  actions:
+    - text: Get Started
+      link: /getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/bupd/timeotter
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why TimeOtter?
+
+<CardGrid stagger>
+  <Card title="Calendar-Driven" icon="sun">
+    Schedule tasks using your existing Google Calendar. Create an event, TimeOtter runs your command.
+  </Card>
+  <Card title="Set and Forget" icon="rocket">
+    Run as a cron job and let TimeOtter handle the rest. No manual intervention needed.
+  </Card>
+  <Card title="Flexible Commands" icon="setting">
+    Execute any shell command - play a video, send a notification, run a script.
+  </Card>
+  <Card title="Minimal Config" icon="document">
+    Just a few lines in `config.toml` and you're ready to go.
+  </Card>
+</CardGrid>
+
+## Quick Example
+
+```toml
+# ~/.config/timeotter/config.toml
+CalendarID = "your-email@gmail.com"
+CmdToExec  = "mpv ~/alarm.mp3"
+TokenFile  = "~/.cal-token.json"
+```
+
+Create a calendar event, and TimeOtter will run your command when it triggers.

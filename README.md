@@ -9,6 +9,7 @@
 [![Test](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/test.yml?style=flat-square&logo=github&label=test)](https://github.com/bupd/timeotter/actions/workflows/test.yml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/lint.yml?style=flat-square&logo=github&label=lint)](https://github.com/bupd/timeotter/actions/workflows/lint.yml)
 [![Docs](https://img.shields.io/github/actions/workflow/status/bupd/timeotter/docs.yml?style=flat-square&logo=github&label=docs)](https://github.com/bupd/timeotter/actions/workflows/docs.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/961e7a52-306c-400d-994f-bdc1ff51e20d/deploy-status)](https://app.netlify.com/projects/timeotter/deploys)
 
 [![GitHub Stars](https://img.shields.io/github/stars/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/bupd/timeotter?style=flat-square&logo=github)](https://github.com/bupd/timeotter/network/members)

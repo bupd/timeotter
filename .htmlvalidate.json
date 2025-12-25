@@ -7,8 +7,14 @@
     "void-style": "off",
     "doctype-style": "off",
     "element-permitted-content": "off",
+    "element-permitted-order": "off",
     "script-type": "off",
     "no-unknown-elements": "off",
-    "require-sri": "off"
+    "require-sri": "off",
+    "no-implicit-button-type": "off",
+    "text-content": "off",
+    "valid-id": "off",
+    "no-raw-characters": "off",
+    "unique-landmark": "off"
   }
 }

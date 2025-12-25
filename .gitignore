@@ -134,3 +134,9 @@ token.json
 
 # Astro
 .astro/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

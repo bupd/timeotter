@@ -42,6 +42,15 @@ linters:
     - usestdlibvars
     - prealloc
 
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+      - path: testutil
+        linters:
+          - gosec
+
 formatters:
   enable:
     - gofmt

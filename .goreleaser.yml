@@ -95,7 +95,11 @@ release:
 
     ### Using Homebrew (macOS/Linux)
     ```bash
-    brew install bupd/timeotter/timeotter
+    # Add the tap (one-time setup)
+    brew tap bupd/timeotter https://github.com/bupd/timeotter
+
+    # Install
+    brew install timeotter
     ```
 
     ### Binary Download
@@ -110,9 +114,15 @@ homebrew_casks:
     repository:
       owner: bupd
       name: timeotter
-      branch: homebrew
+      branch: formula-update
       token: "{{ .Env.GITHUB_TOKEN }}"
-    directory: Casks
+      pull_request:
+        enabled: true
+        base:
+          owner: bupd
+          name: timeotter
+          branch: main
+    directory: Formula
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com

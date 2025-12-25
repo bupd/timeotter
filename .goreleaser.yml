@@ -114,8 +114,14 @@ homebrew_casks:
     repository:
       owner: bupd
       name: timeotter
-      branch: main
+      branch: formula-update
       token: "{{ .Env.GITHUB_TOKEN }}"
+      pull_request:
+        enabled: true
+        base:
+          owner: bupd
+          name: timeotter
+          branch: main
     directory: Formula
     commit_author:
       name: goreleaserbot

@@ -6,21 +6,25 @@ on:
       - main
       - docs
     paths:
-      - "docs/**"
       - "src/**"
       - "public/**"
+      - "tests/**"
       - "astro.config.mjs"
       - "package.json"
+      - "playwright.config.ts"
+      - ".htmlvalidate.json"
       - ".github/workflows/docs.yml"
   pull_request:
     branches:
       - main
     paths:
-      - "docs/**"
       - "src/**"
       - "public/**"
+      - "tests/**"
       - "astro.config.mjs"
       - "package.json"
+      - "playwright.config.ts"
+      - ".htmlvalidate.json"
       - ".github/workflows/docs.yml"
 
 permissions:

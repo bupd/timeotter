@@ -15,12 +15,12 @@ func CreateTempConfig(t *testing.T, content string) string {
 
 	tmpDir := t.TempDir()
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(content), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(content), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -102,12 +102,9 @@ func MockCalendarEvents(events ...*calendar.Event) *calendar.Events {
 	}
 }
 
-// SetHomeDir temporarily sets HOME environment variable and returns a restore function.
-func SetHomeDir(t *testing.T, dir string) func() {
+// SetHomeDir temporarily sets HOME environment variable for the test.
+// Uses t.Setenv which automatically restores the value after the test.
+func SetHomeDir(t *testing.T, dir string) {
 	t.Helper()
-	origHome := os.Getenv("HOME")
-	os.Setenv("HOME", dir)
-	return func() {
-		os.Setenv("HOME", origHome)
-	}
+	t.Setenv("HOME", dir)
 }

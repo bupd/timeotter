@@ -10,15 +10,12 @@ import (
 // These tests verify the full config loading cycle
 
 func TestIntegration_FullConfigCycle(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Create config directory and file
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -34,7 +31,7 @@ CronMarker = "# integration test crons"
 ShowDeleted = true
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -83,15 +80,12 @@ ShowDeleted = true
 }
 
 func TestIntegration_ConfigWithDefaults(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Create config with minimal required fields
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -101,7 +95,7 @@ CmdToExec = "echo hello"
 TokenFile = "/tmp/token.json"
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -131,14 +125,11 @@ TokenFile = "/tmp/token.json"
 }
 
 func TestIntegration_ConfigValidationConstraints(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -151,7 +142,7 @@ MaxRes = 500
 TriggerBeforeMinutes = -10
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -179,14 +170,11 @@ TriggerBeforeMinutes = -10
 }
 
 func TestIntegration_ConfigFilePermissions(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 

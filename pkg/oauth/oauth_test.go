@@ -178,7 +178,7 @@ func TestSaveToken_CreatesDirIfNeeded(t *testing.T) {
 	tokenPath := filepath.Join(tmpDir, "subdir", "token.json")
 
 	// Create the subdir first (SaveToken doesn't create directories)
-	if err := os.MkdirAll(filepath.Dir(tokenPath), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(tokenPath), 0750); err != nil {
 		t.Fatalf("failed to create directory: %v", err)
 	}
 

@@ -14,15 +14,12 @@ import (
 // These tests verify the application initialization and config loading
 
 func TestE2E_ConfigInitialization(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Setup config
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -35,7 +32,7 @@ MaxRes = 10
 TriggerBeforeMinutes = 5
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -108,14 +105,11 @@ func TestE2E_MissingCredentialsFile(t *testing.T) {
 }
 
 func TestE2E_ConfigWithAllFields(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -132,7 +126,7 @@ CronMarker = "# e2e test crons"
 ShowDeleted = true
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -175,14 +169,11 @@ ShowDeleted = true
 }
 
 func TestE2E_ConfigMissingRequiredFields(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -192,7 +183,7 @@ CmdToExec = "echo hello"
 TokenFile = "/tmp/token.json"
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -214,14 +205,11 @@ TokenFile = "/tmp/token.json"
 }
 
 func TestE2E_GlobalVariablesAssignment(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -237,7 +225,7 @@ CronMarker = "# marker"
 ShowDeleted = false
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 

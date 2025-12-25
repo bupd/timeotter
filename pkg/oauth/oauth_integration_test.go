@@ -100,7 +100,7 @@ func TestIntegration_TokenOverwrite(t *testing.T) {
 func TestIntegration_TokenInSubdirectory(t *testing.T) {
 	tmpDir := t.TempDir()
 	subDir := filepath.Join(tmpDir, "deep", "nested", "dir")
-	if err := os.MkdirAll(subDir, 0755); err != nil {
+	if err := os.MkdirAll(subDir, 0750); err != nil {
 		t.Fatalf("failed to create subdirectory: %v", err)
 	}
 

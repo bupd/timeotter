@@ -1,3 +1,4 @@
+// Package testutil provides mock implementations for testing.
 package testutil
 
 import (
@@ -95,7 +96,7 @@ func (m *MockCronManager) AddCrons(cronJob, cmdToExec string) error {
 }
 
 // ClearCronJobs records a cron clear operation.
-func (m *MockCronManager) ClearCronJobs(backupFile, cronMarker string) error {
+func (m *MockCronManager) ClearCronJobs(_, _ string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 

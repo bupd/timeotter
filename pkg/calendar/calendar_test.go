@@ -116,9 +116,9 @@ func TestConvertTimeToCron_MinuteRange(t *testing.T) {
 			t.Errorf("invalid cron output for %s", timeStr)
 			continue
 		}
-		min := parseIntOrNeg1(parts[0])
-		if min < 0 || min > 59 {
-			t.Errorf("minute %d out of range for time %s", min, timeStr)
+		minVal := parseIntOrNeg1(parts[0])
+		if minVal < 0 || minVal > 59 {
+			t.Errorf("minute %d out of range for time %s", minVal, timeStr)
 		}
 	}
 }

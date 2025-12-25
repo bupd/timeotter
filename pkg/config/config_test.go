@@ -190,24 +190,24 @@ func TestValidateConfig_MaxResClamping(t *testing.T) {
 
 func TestValidateConfig_TriggerBeforeMinutes(t *testing.T) {
 	tests := []struct {
-		name                       string
-		inputTriggerBeforeMinutes  int
-		wantTriggerBeforeMinutes   int
+		name                      string
+		inputTriggerBeforeMinutes int
+		wantTriggerBeforeMinutes  int
 	}{
 		{
-			name:                       "positive value unchanged",
-			inputTriggerBeforeMinutes:  10,
-			wantTriggerBeforeMinutes:   10,
+			name:                      "positive value unchanged",
+			inputTriggerBeforeMinutes: 10,
+			wantTriggerBeforeMinutes:  10,
 		},
 		{
-			name:                       "zero unchanged",
-			inputTriggerBeforeMinutes:  0,
-			wantTriggerBeforeMinutes:   0,
+			name:                      "zero unchanged",
+			inputTriggerBeforeMinutes: 0,
+			wantTriggerBeforeMinutes:  0,
 		},
 		{
-			name:                       "negative clamped to 0",
-			inputTriggerBeforeMinutes:  -5,
-			wantTriggerBeforeMinutes:   0,
+			name:                      "negative clamped to 0",
+			inputTriggerBeforeMinutes: -5,
+			wantTriggerBeforeMinutes:  0,
 		},
 	}
 
@@ -258,11 +258,8 @@ func TestValidateConfig_PathExpansion(t *testing.T) {
 }
 
 func TestReadConfig_MissingFile(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Try to read config without creating the file
 	_, err := ReadConfig()
@@ -272,15 +269,12 @@ func TestReadConfig_MissingFile(t *testing.T) {
 }
 
 func TestReadConfig_ValidConfig(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Create config directory and file
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -291,7 +285,7 @@ TokenFile = "/path/to/token.json"
 MaxRes = 10
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -312,15 +306,12 @@ MaxRes = 10
 }
 
 func TestReadConfig_DefaultValues(t *testing.T) {
-	// Save and restore HOME
-	origHome := os.Getenv("HOME")
 	tmpDir := t.TempDir()
-	os.Setenv("HOME", tmpDir)
-	defer os.Setenv("HOME", origHome)
+	t.Setenv("HOME", tmpDir)
 
 	// Create config directory and file with minimal config
 	configDir := filepath.Join(tmpDir, ".config", "timeotter")
-	if err := os.MkdirAll(configDir, 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0750); err != nil {
 		t.Fatalf("failed to create config dir: %v", err)
 	}
 
@@ -330,7 +321,7 @@ CmdToExec = "echo hello"
 TokenFile = "/path/to/token.json"
 `
 	configPath := filepath.Join(configDir, "config.toml")
-	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
 		t.Fatalf("failed to write config file: %v", err)
 	}
 
@@ -346,8 +337,8 @@ TokenFile = "/path/to/token.json"
 	if v.GetInt("TriggerBeforeMinutes") != 5 {
 		t.Errorf("default TriggerBeforeMinutes should be 5, got %d", v.GetInt("TriggerBeforeMinutes"))
 	}
-	if !v.GetBool("ShowDeleted") == true {
-		// ShowDeleted default is false, so !false == true
+	if v.GetBool("ShowDeleted") {
+		t.Errorf("default ShowDeleted should be false")
 	}
 	if v.GetString("CronMarker") != "# custom crons below this can be deleted." {
 		t.Errorf("default CronMarker mismatch, got %s", v.GetString("CronMarker"))

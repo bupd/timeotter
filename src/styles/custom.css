@@ -1,0 +1,72 @@
+/* TimeOtter custom styles - Light mode only */
+
+:root {
+  --sl-color-accent-low: #1e3a5f;
+  --sl-color-accent: #3b82f6;
+  --sl-color-accent-high: #93c5fd;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eceef2;
+  --sl-color-gray-2: #c0c2c7;
+  --sl-color-gray-3: #888b96;
+  --sl-color-gray-4: #545861;
+  --sl-color-gray-5: #353841;
+  --sl-color-gray-6: #24272f;
+  --sl-color-black: #17181c;
+}
+
+/* Hide theme toggle button */
+starlight-theme-select {
+  display: none;
+}
+
+/* Rounded logo in navbar */
+.site-title img {
+  border-radius: 8px;
+}
+
+/* Reduce gap between logo and title */
+.site-title {
+  gap: 0.4rem;
+}
+
+/* Rounded corners on all boxes */
+.card,
+.sl-markdown-content pre,
+.sl-markdown-content code,
+.sl-markdown-content table,
+.starlight-aside,
+.expressive-code,
+.ec-line,
+.frame {
+  border-radius: 8px;
+}
+
+/* Code blocks */
+.expressive-code pre {
+  border-radius: 8px;
+}
+
+/* Cards on homepage */
+.card-grid .card {
+  border-radius: 12px;
+}
+
+/* Aside/callout boxes */
+.starlight-aside {
+  border-radius: 8px;
+}
+
+/* Force light mode always */
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #1e3a5f;
+  --sl-color-accent: #3b82f6;
+  --sl-color-accent-high: #93c5fd;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eceef2;
+  --sl-color-gray-2: #c0c2c7;
+  --sl-color-gray-3: #888b96;
+  --sl-color-gray-4: #545861;
+  --sl-color-gray-5: #353841;
+  --sl-color-gray-6: #24272f;
+  --sl-color-black: #17181c;
+}

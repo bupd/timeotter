@@ -27,14 +27,16 @@ jobs:
 
       - name: Write job summary
         run: |
-          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Coverage Report" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat coverage-report.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Test Output" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat test-output.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## Test Results"
+            echo ""
+            echo "### Coverage Report"
+            echo '```'
+            cat coverage-report.txt
+            echo '```'
+            echo ""
+            echo "### Test Output"
+            echo '```'
+            cat test-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

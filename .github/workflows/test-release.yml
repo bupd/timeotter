@@ -38,7 +38,7 @@ jobs:
         uses: anchore/sbom-action/download-syft@v0
 
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           install-only: true
 
@@ -46,7 +46,7 @@ jobs:
         run: goreleaser check
 
       - name: Test Release (Dry Run)
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           version: latest
           args: release --snapshot --clean --skip=publish
@@ -59,7 +59,7 @@ jobs:
           ls -la dist/
 
       - name: Upload test artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: test-release-artifacts
           path: |
